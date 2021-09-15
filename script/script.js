@@ -5,12 +5,19 @@ const headerInput = document.querySelector('.header-input');
 const todoList = document.querySelector('.todo-list');
 const todoCompleted = document.querySelector('.todo-completed');
 
-const todoData = [];
+let todoData = [];
+
+let getStorage = function() {
+    let data = JSON.parse(localStorage.getItem('todo'));
+
+    if (data) {
+        todoData = data;
+    }
+};
 
 const render = function() {
     todoList.textContent = '';
     todoCompleted.textContent = '';
-
 
     todoData.forEach(function(item) {
         console.log(item);
@@ -35,6 +42,16 @@ const render = function() {
             item.completed = !item.completed;
             render();
         });
+
+        const btnTodoRemove = li.querySelector('.todo-remove');
+        if (btnTodoRemove) {
+            btnTodoRemove.addEventListener('click', function() {
+                let currentItem = todoData.indexOf(item);
+                console.log(currentItem);
+                todoData.splice(currentItem, 1);
+                render();
+            });
+        }
     });
 };
 
@@ -46,8 +63,17 @@ todoControl.addEventListener('submit', function(event) {
         completed: false
     };
 
-    todoData.push(newTodo);
-    render();
+    if (headerInput.value.trim() !== '') {
+        todoData.push(newTodo);
+        render();
+    } else {
+        alert('Введите значение');
+    }
+
+    headerInput.value = '';
+
+    todoData = JSON.parse(localStorage.setItem('todo', todoData.value));
+    getStorage();
 });
 
 render();
