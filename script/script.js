@@ -16,8 +16,9 @@ let getStorage = function() {
 };
 
 const render = function() {
-    todoList.textContent = '';
-    todoCompleted.textContent = '';
+    getStorage();
+    //todoList.textContent = '';
+    //todoCompleted.textContent = '';
 
     todoData.forEach(function(item) {
         console.log(item);
@@ -72,8 +73,7 @@ todoControl.addEventListener('submit', function(event) {
 
     headerInput.value = '';
 
-    todoData = JSON.parse(localStorage.setItem('todo', todoData.value));
-    getStorage();
+    todoData = localStorage.setItem('todo', JSON.stringify(todoData));
 });
 
 render();
