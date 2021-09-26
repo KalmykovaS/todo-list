@@ -5,13 +5,16 @@ const headerInput = document.querySelector('.header-input');
 const todoList = document.querySelector('.todo-list');
 const todoCompleted = document.querySelector('.todo-completed');
 
-const getStorage = () => JSON.parse(localStorage.getItem('todo'));
-const todoData = getStorage() || [];
+const getStorage = function() {
+    let data = localStorage.getItem('todo');
+    return data ? JSON.parse(data) : [];
+};
+const todoData = getStorage();
 const setStorage = () => localStorage.setItem('todo', JSON.stringify(todoData));
 
 const render = function() {
-    //todoList.textContent = '';
-    //todoCompleted.textContent = '';
+    todoList.textContent = '';
+    todoCompleted.textContent = '';
 
     todoData.forEach(function(item) {
         console.log(item);
@@ -34,6 +37,7 @@ const render = function() {
 
         btnTodoComplete.addEventListener('click', function() {
             item.completed = !item.completed;
+            setStorage();
             render();
         });
 
@@ -46,6 +50,7 @@ const render = function() {
                 render();
             });
         }
+        setStorage();
     });
 };
 
